@@ -4,6 +4,7 @@
 .DEFAULT_GOAL := blink
 DEVICE 	   = attiny2313a
 MCU = m48p
+USB = /dev/ttyACM0
 CLOCK      = 4000000
 FUSES      = -U lfuse:w:0x42:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 
@@ -25,7 +26,7 @@ blink: blink.o
 
 all: blink
 	$(OBJCOPY) -j .text -j .data -O ihex $^ $^.hex
-	$(AVRDUDE) -c avrispmkII -p $(MCU) -U flash:w: $^.hex
+	$(AVRDUDE) -c avrispmkII -p $(USB) -U flash:w: $^.hex
 
 
 
