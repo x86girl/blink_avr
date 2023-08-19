@@ -2,7 +2,7 @@
 # License: MIT
 
 .DEFAULT_GOAL := blink
-DEVICE 	   = attiny2313a
+DEVICE 	   = atmega328p
 MCU = m48p
 USB = /dev/ttyACM0
 CLOCK      = 4000000
@@ -24,10 +24,10 @@ blink.o: blink.c
 blink: blink.o
 	$(CC) -o $@ $^
 
-all: blink
+install: blink
 	$(OBJCOPY) -j .text -j .data -O ihex $^ $^.hex
-	$(AVRDUDE) -c avrispmkII -p $(USB) -U flash:w: $^.hex
-
+# $(AVRDUDE) -c avrispmkII -p $(MCU) -U flash:w: $^.hex
+	avrdude - -v -patmega328p -carduino -P/dev/ttyUSB0 -b115200 -D -Uflash:w:blink.hex:i
 
 
 clean:	blink
